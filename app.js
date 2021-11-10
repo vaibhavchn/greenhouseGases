@@ -37,9 +37,9 @@ bluesky.get("/countries", async (req, res) => {
     redisClient.get('countries', (error, countries) => {
         if (error) console.log(error)
         if (countries != null) {
-            return res.status(200).json(countries);
+            return res.status(200).end(countries);
         }
-        
+
     })
   try {
     const response = await admin.firestore().collection("Pollution").get();
