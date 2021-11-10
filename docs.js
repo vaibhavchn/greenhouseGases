@@ -54,7 +54,7 @@ const docs = {
         "x-swagger-router-controller": "Default"
       }
     },
-    "/country/{id}": {
+    "/country/{id}/query": {
       "get": {
         "summary": "Gives the data of the gases mentioned for a specific country(id) for a given range of time frame.",
         "description": "This end point provides the data in the range of years specified (startYear - endYear) for a given set of gases (CO2 and CH4 ...) for a given country (id). If range is not given it will produce entire data for those gases. If a value dosen't exist for a gas for a given time frame, \"NaN\" will be prvided. This api also provides a metaData object in the response which specifies what you requested for and what you are getting along with the completeness of the data being provided. And finally a message for any relevant information.",
