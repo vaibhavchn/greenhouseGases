@@ -86,4 +86,4 @@ const years = [
   ];
 
 
-  export default {years, countries, categories}
+  module.exports = {years, countries, categories}

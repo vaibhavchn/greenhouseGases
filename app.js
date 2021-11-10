@@ -1,5 +1,5 @@
 
-import {years, countries, categories} from './data';
+import {years, countries, categories} from './data.js';
 import admin from 'firebase-admin';
 import express from 'express';
 import cors from 'cors';
