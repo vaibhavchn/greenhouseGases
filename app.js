@@ -35,65 +35,66 @@ const PORT = process.env.PORT || 5000;
 
 bluesky.get("/countries", async (req, res) => {
     try {
-      const x = redisClient.get('countries', (error, countries) => {
+      redisClient.get('countries', (error, countries) => {
           if (error) console.log(error)
           if (countries != null) {
               return res.status(200).json(JSON.parse(countries));
-          }
-  
-      })
-      console.log(x)
-    const response = await admin.firestore().collection("Pollution").get();
-
-    if (response) {
-      const data = response.docs;
-      let finalData = [];
-
-      Object.keys(data).forEach((item) => {
-        const countryName = data[item].id;
-        let queryCountry = {name: countryName};
-
-        Object.keys(data[item].data()).forEach((innerItem) => {
-          queryCountry[innerItem] = {};
-
-          const yearList = Object.keys(data[item].data()[innerItem]);
-          let startYear = null;
-          let endYear = null;
-
-          for (let yearName of yearList) {
-            if (data[item].data()[innerItem][yearName] === "NaN" && yearName !== yearList[yearList.length - 1]) {
-              continue;
-            }
-            if (data[item].data()[innerItem][yearName] === "NaN" && yearName === yearList[yearList.length - 1] && (startYear && endYear) === null) {
-              queryCountry[innerItem].message = "Data unavailable";
-              break;
-            }
-            if (data[item].data()[innerItem][yearName] !== "NaN") {
-              queryCountry[innerItem].message = "Data available";
-              if (startYear === null) {
-                startYear = yearName;
-              }
-              endYear = yearName;
-            }
-          }
-
-
-          if (queryCountry[innerItem].message !== "Data unavailable") {
-            queryCountry[innerItem][startYear] = data[item].data()[innerItem][startYear];
-            queryCountry[innerItem][endYear] = data[item].data()[innerItem][endYear];
           } else {
-            queryCountry[innerItem][yearList[0]] = "NaN";
-            queryCountry[innerItem][yearList[yearList.length - 1]] = "NaN";
+
+              const response = await admin.firestore().collection("Pollution").get();
+          
+              if (response) {
+                const data = response.docs;
+                let finalData = [];
+          
+                Object.keys(data).forEach((item) => {
+                  const countryName = data[item].id;
+                  let queryCountry = {name: countryName};
+          
+                  Object.keys(data[item].data()).forEach((innerItem) => {
+                    queryCountry[innerItem] = {};
+          
+                    const yearList = Object.keys(data[item].data()[innerItem]);
+                    let startYear = null;
+                    let endYear = null;
+          
+                    for (let yearName of yearList) {
+                      if (data[item].data()[innerItem][yearName] === "NaN" && yearName !== yearList[yearList.length - 1]) {
+                        continue;
+                      }
+                      if (data[item].data()[innerItem][yearName] === "NaN" && yearName === yearList[yearList.length - 1] && (startYear && endYear) === null) {
+                        queryCountry[innerItem].message = "Data unavailable";
+                        break;
+                      }
+                      if (data[item].data()[innerItem][yearName] !== "NaN") {
+                        queryCountry[innerItem].message = "Data available";
+                        if (startYear === null) {
+                          startYear = yearName;
+                        }
+                        endYear = yearName;
+                      }
+                    }
+          
+          
+                    if (queryCountry[innerItem].message !== "Data unavailable") {
+                      queryCountry[innerItem][startYear] = data[item].data()[innerItem][startYear];
+                      queryCountry[innerItem][endYear] = data[item].data()[innerItem][endYear];
+                    } else {
+                      queryCountry[innerItem][yearList[0]] = "NaN";
+                      queryCountry[innerItem][yearList[yearList.length - 1]] = "NaN";
+                    }
+                  });
+                  finalData.push(queryCountry);
+                });
+                redisClient.setex("countries", DEFAULT_EXPIRATION, JSON.stringify(finalData));
+                return res.status(200).json(finalData);
+              } else {
+                console.log("Something went wrong");
+                return res.status(500).json({message: "Internal Server Error"});
+              }
           }
-        });
-        finalData.push(queryCountry);
-      });
-      redisClient.setex("countries", DEFAULT_EXPIRATION, JSON.stringify(finalData));
-      return res.status(200).json(finalData);
-    } else {
-      console.log("Something went wrong");
-      return res.status(500).json({message: "Internal Server Error"});
-    }
+      })
+      
   } catch (error) {
     console.error("message: ", error);
     return res.status(500).json({message: "Internal Server Error"});
