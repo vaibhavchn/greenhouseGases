@@ -16,9 +16,9 @@ admin.initializeApp({
 
 
 
-const redisClient = Redis.createClient('redis://:p704c91a7501171bc01a1ba83cb98e3b1d624bbce5d93cf9d0f75f2273d370cfa@ec2-3-216-231-188.compute-1.amazonaws.com:9850', tls: {
+const redisClient = Redis.createClient('redis://:p704c91a7501171bc01a1ba83cb98e3b1d624bbce5d93cf9d0f75f2273d370cfa@ec2-3-216-231-188.compute-1.amazonaws.com:9850', {tls: {
         rejectUnauthorized: false
-    });
+    }});
 
 redisClient.on('error', err => {
     console.log('Error ' + err);
