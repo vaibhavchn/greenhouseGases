@@ -149,7 +149,10 @@ bluesky.get("/country/:id/query", async (req, res) => {
   let queryCountry = req.params.id;
   const {endYear: queryEndYear, startYear: queryStartYear, name: gasname} = req.query;
 
-  queryCountry = queryCountry.charAt(0).toUpperCase() + queryCountry.slice(1).toLowerCase();  // Handeling casing problem for country name
+  // Handeling casing problem for country name
+  var countryName = queryCountry.split(" ").map(queryCountry => queryCountry.charAt(0).toUpperCase() + queryCountry.slice(1).toLowerCase())
+  queryCountry = countryName.join(" ") === "United States Of America" ? "United States of America" : countryName.join(" ");
+  
   if (!gasname) {
     return res.status(400).json({message: "Incomplete query"});
   }
@@ -207,7 +210,6 @@ bluesky.get("/country/:id/query", async (req, res) => {
   keyList.push(finalStartYear, finalEndYear);
   const key = keyList.join("_");
 
-  
   
   try {
       const countrySpecificData = await cacheManage(key, async () => {
