@@ -14,6 +14,8 @@ admin.initializeApp({
   databaseURL: "https://ifrenny-default-rtdb.firebaseio.com"
 });
 
+console.log(process.env.REDIS_URL)
+
 
 const redisClient = Redis.createClient({
     host: "ec2-3-216-231-188.compute-1.amazonaws.com",
