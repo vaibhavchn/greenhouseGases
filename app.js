@@ -5,7 +5,7 @@ import express from 'express';
 import cors from 'cors';
 import Redis from 'redis';
 import dotenv from 'dotenv';
-import serviceAccount from './ifrenny-firebase-adminsdk-xkwe6-b6f19331b0.json';
+import serviceAccount from './ifrenny-firebase-adminsdk-xkwe6-b6f19331b0.js';
 dotenv.config();
 
 

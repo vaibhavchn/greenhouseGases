@@ -1,4 +1,4 @@
-{
+const creds = {
   "type": "service_account",
   "project_id": "ifrenny",
   "private_key_id": "b6f19331b0919f80d432a010218f434fc3ef1cde",
@@ -10,3 +10,5 @@
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-xkwe6%40ifrenny.iam.gserviceaccount.com"
 }
+
+export default {creds}
