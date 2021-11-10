@@ -35,14 +35,14 @@ const PORT = process.env.PORT || 5000;
 
 bluesky.get("/countries", async (req, res) => {
     try {
-      redisClient.get('countries', (error, countries) => {
+      const x = redisClient.get('countries', (error, countries) => {
           if (error) console.log(error)
           if (countries != null) {
-              return res.status(200).end(countries);
+              return res.status(200).json(JSON(countries));
           }
   
       })
-      console.log('=====================================================')
+      console.log(x)
     const response = await admin.firestore().collection("Pollution").get();
 
     if (response) {
