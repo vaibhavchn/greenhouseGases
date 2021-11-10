@@ -1,6 +1,8 @@
 
 import {years, countries, categories} from './data.js';
+import swaggerUi from 'swagger-ui-express'
 import admin from 'firebase-admin';
+import docs from './docs.js';
 import express from 'express';
 import cors from 'cors';
 import Redis from 'redis';
@@ -8,11 +10,12 @@ import serviceAccount from './ifrenny-firebase-adminsdk-xkwe6-b6f19331b0.js'; //
 import dotenv from 'dotenv';
 dotenv.config();
 
-console.log(process.env.REDIS_URL)
+
 
 
 const bluesky = express();
 bluesky.use(cors({origin: true}));
+bluesky.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
 
 
 // Initializing firebase instance 
@@ -150,7 +153,7 @@ bluesky.get("/countries", async (req, res) => {
 
 bluesky.get("/country/:id/query", async (req, res) => {
   let queryCountry = req.params.id;
-  const {endYear: queryEndYear, startYear: queryStartYear, name: gasname} = req.query;
+  const {endYear: queryEndYear, startYear: queryStartYear, gas: gasname} = req.query;
 
   // Handeling casing problem for country name
   var countryName = queryCountry.split(" ").map(queryCountry => queryCountry.charAt(0).toUpperCase() + queryCountry.slice(1).toLowerCase())
@@ -184,8 +187,9 @@ bluesky.get("/country/:id/query", async (req, res) => {
 
   //  If startYear is greater than endYear --> Invert the values
   if (Number(queryStartYear) > Number(queryEndYear)) {
-    finalStartYear = queryEndYear;
-    finalEndYear = queryStartYear;
+    // finalStartYear = queryEndYear;
+    // finalEndYear = queryStartYear;
+    return res.status(400).json({message: "startYear should be earlier than endYear"});
   }
 
   // Year values out of bound
