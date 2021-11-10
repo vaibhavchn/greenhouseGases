@@ -9,6 +9,8 @@ import serviceAccount from './ifrenny-firebase-adminsdk-xkwe6-b6f19331b0.json';
 dotenv.config();
 
 
+
+
 // Initializing and declaring variable 
 
 admin.initializeApp({
