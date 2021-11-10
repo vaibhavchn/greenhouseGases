@@ -34,6 +34,12 @@ const PORT = process.env.PORT || 5000;
 
 
 bluesky.get("/countries", async (req, res) => {
+    redisClient.get('countries', (error, countries) => {
+        if (error) console.log(error)
+        if (countries != null) {
+            console.log(countries)
+        }
+    })
   try {
     const response = await admin.firestore().collection("Pollution").get();
 
@@ -80,7 +86,7 @@ bluesky.get("/countries", async (req, res) => {
         });
         finalData.push(queryCountry);
       });
-      redisClient.setex("countries", DEFAULT_EXPIRATION, JSON.stringify(finalData));
+    //   redisClient.setex("countries", DEFAULT_EXPIRATION, JSON.stringify(finalData));
       return res.status(200).json(finalData);
     } else {
       console.log("Something went wrong");
