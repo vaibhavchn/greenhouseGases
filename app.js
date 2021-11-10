@@ -15,17 +15,9 @@ admin.initializeApp({
 });
 
 
-const redisClient = Redis.createClient({
-    host: "ec2-3-216-231-188.compute-1.amazonaws.com",
-    port: 9850
-});
+const redisClient = Redis.createClient();
 
-const namespaces = io.nsps;
-Object.keys(namespaces).forEach((namespaceName) => {
-  io.of(namespaceName).adapter.on('error', (e) => {
-  console.error(`On namespace: ${namespaceName} - ${e}`);
-  });
-});
+
 // console.log('++++++++++++++++++++++++++++++++++++', redisClient);
 const DEFAULT_EXPIRATION = 3600;
 
