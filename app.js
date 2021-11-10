@@ -22,7 +22,6 @@ admin.initializeApp({
   databaseURL: "https://ifrenny-default-rtdb.firebaseio.com"
 });
 
-
 // Initializing Redis client
 
 const redisClient = Redis.createClient(process.env.REDIS_URL, {tls: {
