@@ -80,7 +80,7 @@ bluesky.get("/countries", async (req, res) => {
         });
         finalData.push(queryCountry);
       });
-    //   redisClient.setex("countries", DEFAULT_EXPIRATION, JSON.stringify(finalData));
+      redisClient.setex("countries", DEFAULT_EXPIRATION, JSON.stringify(finalData));
       return res.status(200).json(finalData);
     } else {
       console.log("Something went wrong");
