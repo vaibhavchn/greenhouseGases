@@ -39,6 +39,7 @@ bluesky.get("/countries", async (req, res) => {
         if (countries != null) {
             return res.status(200).json(countries);
         }
+        
     })
   try {
     const response = await admin.firestore().collection("Pollution").get();
