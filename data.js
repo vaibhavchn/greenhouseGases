@@ -86,4 +86,4 @@ const years = [
   ];
 
 
-  export default {years, countries, categories}
+  export {years, countries, categories}

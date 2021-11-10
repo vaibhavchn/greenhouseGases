@@ -11,4 +11,4 @@ const creds = {
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-xkwe6%40ifrenny.iam.gserviceaccount.com"
 }
 
-export default {creds}
+export default creds
