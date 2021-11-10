@@ -1,11 +1,11 @@
 
-const admin = require("firebase-admin");
-const express = require("express");
-const cors = require("cors");
-const Redis = require("redis");
-const serviceAccount = require("./ifrenny-firebase-adminsdk-xkwe6-b6f19331b0.json");
-const dotenv = require("dotenv");
 import {years, countries, categories} from './data';
+import admin from 'firebase-admin';
+import express from 'express';
+import cors from 'cors';
+import Redis from 'redis';
+import dotenv from 'dotenv';
+import serviceAccount from './ifrenny-firebase-adminsdk-xkwe6-b6f19331b0.json'
 dotenv.config();
 
 
@@ -53,7 +53,7 @@ const cacheManage = (key, callBack) => {
 
 bluesky.get("/countries", async (req, res) => {
     try {
-      const countryData = cacheManage('countries', () => {
+      const countryData = cacheManage('countries', async () => {
         const response = await admin.firestore().collection("Pollution").get();
         if (response) {
         const data = response.docs;
