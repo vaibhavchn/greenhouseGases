@@ -18,7 +18,7 @@ admin.initializeApp({
 const redisClient = Redis.createClient({url: process.env.REDIS_URL});
 
 redisClient.on('error', err => {
-    console.log('Error ' + err);
+    // console.log('Error ' + err);
 });
 
 // console.log('++++++++++++++++++++++++++++++++++++', redisClient);
