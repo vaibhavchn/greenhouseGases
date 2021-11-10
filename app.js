@@ -8,6 +8,8 @@ import serviceAccount from './ifrenny-firebase-adminsdk-xkwe6-b6f19331b0.js'; //
 import dotenv from 'dotenv';
 dotenv.config();
 
+console.log(process.env.REDIS_URL)
+
 
 const bluesky = express();
 bluesky.use(cors({origin: true}));
@@ -23,7 +25,7 @@ admin.initializeApp({
 
 // Initializing Redis client
 
-const redisClient = Redis.createClient('redis://:p704c91a7501171bc01a1ba83cb98e3b1d624bbce5d93cf9d0f75f2273d370cfa@ec2-3-216-231-188.compute-1.amazonaws.com:9850', {tls: {
+const redisClient = Redis.createClient(process.env.REDIS_URL, {tls: {
         rejectUnauthorized: false
     }});
 
@@ -53,6 +55,8 @@ const cacheManage = (key, callBack) => {
         })
     })
 }
+
+
 
 // First API ----------------->
 
@@ -143,7 +147,6 @@ bluesky.get("/countries", async (req, res) => {
 
 
 // Second API --------------->
-
 
 bluesky.get("/country/:id/query", async (req, res) => {
   let queryCountry = req.params.id;

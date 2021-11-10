@@ -1,4 +1,5 @@
 /node_modules
 npm-debug.log
+/ifrenny-firebase-adminsdk-xkwe6-b6f19331b0.js
 .DS_Store
 /*.env
