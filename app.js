@@ -37,7 +37,7 @@ bluesky.get("/countries", async (req, res) => {
     redisClient.get('countries', (error, countries) => {
         if (error) console.log(error)
         if (countries != null) {
-            console.log(countries)
+            return res.status(200).json(countries);
         }
     })
   try {
