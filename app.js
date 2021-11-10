@@ -21,6 +21,9 @@ const redisClient = Redis.createClient({
     password: 'p704c91a7501171bc01a1ba83cb98e3b1d624bbce5d93cf9d0f75f2273d370cfa'
 });
 
+client.on('error', err => {
+    console.log('Error ' + err);
+});
 
 // console.log('++++++++++++++++++++++++++++++++++++', redisClient);
 const DEFAULT_EXPIRATION = 3600;
