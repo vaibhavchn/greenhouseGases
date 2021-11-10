@@ -4,13 +4,13 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node --experimental-json-modules app.js"
   },
   "type": "module",
   "engines": {
     "node": "15.2"
   },
-  "author": "",
+  "author": "Vaibhav",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
