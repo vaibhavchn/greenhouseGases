@@ -7,17 +7,19 @@ const serviceAccount = require("./ifrenny-firebase-adminsdk-xkwe6-b6f19331b0.jso
 const dotenv = require("dotenv");
 dotenv.config();
 
+console.log("================================================================");
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://ifrenny-default-rtdb.firebaseio.com"
 });
 
 
-const redisClient = Redis.createClient(process.env.REDIS_URL, {
-    tls: {
-        rejectUnauthorized: false
-    }
+const redisClient = Redis.createClient({
+    host: "ec2-3-216-231-188.compute-1.amazonaws.com",
+    port: 9850
 });
+console.log('++++++++++++++++++++++++++++++++++++', redisClient);
 const DEFAULT_EXPIRATION = 3600;
 
 const bluesky = express();
