@@ -19,7 +19,7 @@ const redisClient = Redis.createClient({
     host: "ec2-3-216-231-188.compute-1.amazonaws.com",
     port: 9850
 });
-console.log('++++++++++++++++++++++++++++++++++++', redisClient);
+// console.log('++++++++++++++++++++++++++++++++++++', redisClient);
 const DEFAULT_EXPIRATION = 3600;
 
 const bluesky = express();
