@@ -1,6 +1,7 @@
 var keys = {}
 export var cacheData = {}
 var cacheSize = 0;
+
 export const keyCounter = (key, data) => {
   if (Object.keys(keys).includes(key)){
     keys[key] = keys[key] + 1; // incresing the count of query frequency

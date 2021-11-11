@@ -1,4 +1,3 @@
-
 import {years, countries, categories} from './data.js';
 import swaggerUi from 'swagger-ui-express'
 import admin from 'firebase-admin';
