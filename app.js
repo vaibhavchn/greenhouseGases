@@ -1,6 +1,5 @@
 
 import {years, countries, categories} from './data.js';
-import schedule from 'node-schedule';
 import swaggerUi from 'swagger-ui-express'
 import admin from 'firebase-admin';
 import docs from './docs.js';
@@ -9,46 +8,8 @@ import cors from 'cors';
 import Redis from 'redis';
 import serviceAccount from './ifrenny-firebase-adminsdk-xkwe6-b6f19331b0.js'; // Obtaining config credentials for firebase
 import dotenv from 'dotenv';
+import {cacheData, keyCounter} from './cacheManager.js'
 dotenv.config();
-
-// ------- Caching the first query on the server ram itself
-
-var keys = {}
-var cacheData = {}
-var cacheSize = 0;
-schedule.scheduleJob('0 0 * * *', function(){
-  // countriesResponse = null
-});
-
-const keyCounter = (key, data) => {
-  if (Object.keys(keys).includes(key)){
-    keys[key] = keys[key] + 1; // incresing the count of query frequency
-  } else {
-    keys[key] = 1
-  }
-  if(Object.keys(cacheData).includes(key)){
-    return;
-  }
-  if(cacheSize < 50) {
-    cacheData[key] = data;
-    cacheSize ++;
-  } else {
-    var smallestKeyCount = 99999999999999;
-    var smallestKey = null;
-    Object.keys(cacheData).map((item, index) => {
-      if (keys[item] < smallestKeyCount) {
-        smallestKey = item;
-        smallestKeyCount = keys[item]
-      }
-    })
-    // no we have the key that have a smallest key count
-    if (keys[key] > keys[smallestKey]) {
-      delete cacheData[smallestKey];
-      cacheData[key] = data;
-    }
-  }
-}
-
 
 
 
@@ -209,12 +170,13 @@ bluesky.get("/countries", async (req, res) => {
 bluesky.get("/country/:id/query", async (req, res) => {
   let queryCountry = req.params.id;
   const {endYear: queryEndYear, startYear: queryStartYear, gas: gasname} = req.query;
+  console.log(queryEndYear, queryStartYear)
 
   // Handeling casing problem for country name
   var countryName = queryCountry.split(" ").map(queryCountry => queryCountry.charAt(0).toUpperCase() + queryCountry.slice(1).toLowerCase())
   queryCountry = countryName.join(" ") === "United States Of America" ? "United States of America" : countryName.join(" ");
   
-  if (!gasname || isNaN(Number(queryEndYear)) || isNaN(Number(queryStartYear))) {
+  if (!gasname || (isNaN(Number(queryEndYear)) && queryEndYear !== undefined) || (isNaN(Number(queryStartYear)) && queryStartYear !== undefined)) {
     return res.status(400).json({message: "Malformed or Incomplete query"});
   }
 
