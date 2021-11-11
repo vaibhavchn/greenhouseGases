@@ -8,6 +8,16 @@ End point:
     
 Api docs:
     https://sheltered-eyrie-76205.herokuapp.com/api-docs
+    
+    
+Tools and technologies used:
+
+    1. Nodejs 
+    2. Firestore 
+    3. Redis (for remote cache) 
+    4. Swagger (for documentation) 
+    5. Heroku (deployment server)
+
 
 
 
