@@ -1,5 +1,6 @@
 
 import {years, countries, categories} from './data.js';
+import schedule from 'node-schedule';
 import swaggerUi from 'swagger-ui-express'
 import admin from 'firebase-admin';
 import docs from './docs.js';
@@ -9,6 +10,45 @@ import Redis from 'redis';
 import serviceAccount from './ifrenny-firebase-adminsdk-xkwe6-b6f19331b0.js'; // Obtaining config credentials for firebase
 import dotenv from 'dotenv';
 dotenv.config();
+
+// ------- Caching the first query on the server ram itself
+
+var keys = {}
+var cacheData = {}
+var cacheSize = 0;
+schedule.scheduleJob('0 0 * * *', function(){
+  // countriesResponse = null
+});
+
+const keyCounter = (key, data) => {
+  if (Object.keys(keys).includes(key)){
+    keys[key] = keys[key] + 1; // incresing the count of query frequency
+  } else {
+    keys[key] = 1
+  }
+  if(Object.keys(cacheData).includes(key)){
+    return;
+  }
+  if(cacheSize < 50) {
+    cacheData[key] = data;
+    cacheSize ++;
+  } else {
+    var smallestKeyCount = 99999999999999;
+    var smallestKey = null;
+    Object.keys(cacheData).map((item, index) => {
+      if (keys[item] < smallestKeyCount) {
+        smallestKey = item;
+        smallestKeyCount = keys[item]
+      }
+    })
+    // no we have the key that have a smallest key count
+    if (keys[key] > keys[smallestKey]) {
+      delete cacheData[smallestKey];
+      cacheData[key] = data;
+    }
+  }
+}
+
 
 
 
@@ -55,6 +95,7 @@ const cacheManage = (key, callBack) => {
             const newData = await callBack() // fired if data is not available in redis and gets the data inside this callback function
             redisClient.setex(key, DEFAULT_EXPIRATION, JSON.stringify(newData)) // Setting a key value pair with expiration time
             resolve(newData)
+            return;
         })
     })
 }
@@ -64,6 +105,16 @@ const cacheManage = (key, callBack) => {
 // First API ----------------->
 
 bluesky.get("/countries", async (req, res) => {
+  var keyValue = cacheData["countries"];
+    if(keyValue !== undefined) {
+      if(typeof keyValue === "string") {
+        res.status(200).json(JSON.parse(keyValue));
+      } else {
+        res.status(200).json(keyValue);
+      }
+      keyCounter('countries', keyValue);
+      return;
+    }
     try {
       const countryData = await cacheManage('countries', async () => {
         const response = await admin.firestore().collection("Pollution").get(); // Get data from firestore
@@ -134,9 +185,13 @@ bluesky.get("/countries", async (req, res) => {
 
       if(countryData !== 500) {
           if(typeof countryData === "string") {
-              return res.status(200).json(JSON.parse(countryData));
+              res.status(200).json(JSON.parse(countryData));
+              keyCounter('countries', countryData);
+              return;
             } else {
-              return res.status(200).json(countryData);
+              res.status(200).json(countryData);
+              keyCounter('countries', countryData);
+              return;
           }
         } else {
           return res.status(500).json({message: "Internal Server Error"});
@@ -159,8 +214,8 @@ bluesky.get("/country/:id/query", async (req, res) => {
   var countryName = queryCountry.split(" ").map(queryCountry => queryCountry.charAt(0).toUpperCase() + queryCountry.slice(1).toLowerCase())
   queryCountry = countryName.join(" ") === "United States Of America" ? "United States of America" : countryName.join(" ");
   
-  if (!gasname) {
-    return res.status(400).json({message: "Incomplete query"});
+  if (!gasname || isNaN(Number(queryEndYear)) || isNaN(Number(queryStartYear))) {
+    return res.status(400).json({message: "Malformed or Incomplete query"});
   }
 
   // Handeling casing problem for gas names
@@ -216,6 +271,19 @@ bluesky.get("/country/:id/query", async (req, res) => {
   keyList = keyList.concat(queryCategories);
   keyList.push(finalStartYear, finalEndYear);
   const key = keyList.join("_");
+
+  
+  var keyValueIndividual = cacheData[key];
+  if(keyValueIndividual !== undefined) {
+    if(typeof keyValueIndividual === "string") {
+        res.status(200).json(JSON.parse(keyValueIndividual));
+      } else {
+        res.status(200).json(keyValueIndividual);
+      }
+      // res.status(200).json(JSON.parse(cacheData[key]));
+      keyCounter(key, keyValueIndividual);
+      return;
+    }
 
   
   try {
@@ -277,9 +345,13 @@ bluesky.get("/country/:id/query", async (req, res) => {
 
       if(countrySpecificData !== 500) {
           if(typeof countrySpecificData === "string") {
-              return res.status(200).json(JSON.parse(countrySpecificData));
+              res.status(200).json(JSON.parse(countrySpecificData));
+              keyCounter(key, countrySpecificData);
+              return;
             } else {
-              return res.status(200).json(countrySpecificData);
+              res.status(200).json(countrySpecificData);
+              keyCounter(key, countrySpecificData);
+              return;
           }
         } else {
           return res.status(500).json({message: "Internal Server Error"});

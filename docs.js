@@ -286,7 +286,7 @@ const docs = {
         "properties": {
           "message": {
             "type": "string",
-            "example": "Incomplete query"
+            "example": "Malformed or Incomplete query"
           }
         }
       },
