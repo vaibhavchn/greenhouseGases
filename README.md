@@ -9,6 +9,8 @@ End point:
 Api docs:
     https://sheltered-eyrie-76205.herokuapp.com/api-docs
     
+Example:
+    https://sheltered-eyrie-76205.herokuapp.com/Australia/query?gas=CO2%20and%20CH4&startYear=1998&endYear=2014
     
 Tools and technologies used:
 
