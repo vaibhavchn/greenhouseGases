@@ -10,7 +10,9 @@ Api docs:
     https://sheltered-eyrie-76205.herokuapp.com/api-docs
 
 
+
 Codes for the gases:
+
     carbon_dioxide_co2_emissions_without_land_use_land_use_change_and_forestry_lulucf_in_kilotonne_co2_equivalent-------> CO2
     greenhouse_gas_ghgs_emissions_including_indirect_co2_without_lulucf_in_kilotonne_co2_equivalent---------------------> GHGSCO2
     greenhouse_gas_ghgs_emissions_without_land_use_land_use_change_and_forestry_lulucf_in_kilotonne_co2_equivalent------> GHGS
@@ -23,10 +25,15 @@ Codes for the gases:
     unspecified_mix_of_hydrofluorocarbons_hfcs_and_perfluorocarbons_pfcs_emissions_in_kilotonne_co2_equivalent----------> HFCPFC
 
 
+
 Years for which data is available:
+
     1990 to 2014
     
+    
+    
 Countries for which data is available:
+
     [
     "Australia",
     "Austria",
