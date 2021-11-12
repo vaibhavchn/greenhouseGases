@@ -228,9 +228,7 @@ bluesky.get("/country/:id/query", async (req, res) => {
 
   // Making key for storing data in REDIS
   queryCategories.sort()
-  var keyList = [queryCountry];
-  keyList = keyList.concat(queryCategories);
-  keyList.push(finalStartYear, finalEndYear);
+  var keyList = [queryCountry, ...queryCategories, finalStartYear, finalEndYear]
   const key = keyList.join("_");
 
   
