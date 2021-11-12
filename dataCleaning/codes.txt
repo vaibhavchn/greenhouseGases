@@ -1,0 +1,10 @@
+carbon_dioxide_co2_emissions_without_land_use_land_use_change_and_forestry_lulucf_in_kilotonne_co2_equivalent-------> CO2
+greenhouse_gas_ghgs_emissions_including_indirect_co2_without_lulucf_in_kilotonne_co2_equivalent---------------------> GHGSCO2
+greenhouse_gas_ghgs_emissions_without_land_use_land_use_change_and_forestry_lulucf_in_kilotonne_co2_equivalent------> GHGS
+hydrofluorocarbons_hfcs_emissions_in_kilotonne_co2_equivalent-------------------------------------------------------> HFCS
+methane_ch4_emissions_without_land_use_land_use_change_and_forestry_lulucf_in_kilotonne_co2_equivalent--------------> CH4
+nitrogen_trifluoride_nf3_emissions_in_kilotonne_co2_equivalent------------------------------------------------------> NF3
+nitrous_oxide_n2o_emissions_without_land_use_land_use_change_and_forestry_lulucf_in_kilotonne_co2_equivalent--------> NO2
+perfluorocarbons_pfcs_emissions_in_kilotonne_co2_equivalent---------------------------------------------------------> PFCS
+sulphur_hexafluoride_sf6_emissions_in_kilotonne_co2_equivalent------------------------------------------------------> SF6
+unspecified_mix_of_hydrofluorocarbons_hfcs_and_perfluorocarbons_pfcs_emissions_in_kilotonne_co2_equivalent----------> HFCPFC
